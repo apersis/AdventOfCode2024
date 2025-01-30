@@ -39,15 +39,15 @@ public class Main{
         }
         for (int i = 0; i < virginMap.length; i++) {
             for (int j = 0; j < virginMap[0].length; j++) {
-                char[][] map = new char[130][130];
+                String[][] map = new String[130][130];
                 for (int k = 0; k < virginMap.length; k++) {
                     for (int l = 0; l < virginMap[0].length; l++) {
-                        map[k][l] = virginMap[k][l];
+                        map[k][l] = String.valueOf(virginMap[k][l]);
                     }
                 }
                 //System.arraycopy(virginMap, 0 ,map, 0, 130);
-                if(map[i][j] == '.') {
-                    map[i][j] = '#';
+                if(map[i][j].equals(".")) {
+                    map[i][j] = "#";
                     isOOB = false;
                     isLooping = false;
                     posX = posDepartX;
@@ -58,10 +58,10 @@ public class Main{
                             print2D(map);
                         }
                         if (direction % 4 == 0) {
-                            if (map[posX][posY] != 'H') {
-                                map[posX][posY] = 'H';
+                            if (!map[posX][posY].contains("H")) {
+                                map[posX][posY] += 'H';
                                 if (posX > 0) {
-                                    if (map[posX - 1][posY] == '#') {
+                                    if (map[posX - 1][posY].equals("#")) {
                                         direction++;
                                     } else {
                                         posX--;
@@ -74,10 +74,10 @@ public class Main{
                                 totalPart2++;
                             }
                         } else if (direction % 4 == 1) {
-                            if (map[posX][posY] != 'D') {
-                                map[posX][posY] = 'D';
+                            if (!map[posX][posY].contains("D")) {
+                                map[posX][posY] += 'D';
                                 if (posY < 129) {
-                                    if (map[posX][posY + 1] == '#') {
+                                    if (map[posX][posY + 1].equals("#")) {
                                         direction++;
                                     } else {
                                         posY++;
@@ -90,10 +90,10 @@ public class Main{
                                 totalPart2++;
                             }
                         } else if (direction % 4 == 2) {
-                            if (map[posX][posY] != 'B') {
-                                map[posX][posY] = 'B';
+                            if (!map[posX][posY].contains("B")) {
+                                map[posX][posY] += 'B';
                                 if (posX < 129) {
-                                    if (map[posX + 1][posY] == '#') {
+                                    if (map[posX + 1][posY].equals("#")) {
                                         direction++;
                                     } else {
                                         posX++;
@@ -106,10 +106,10 @@ public class Main{
                                 totalPart2++;
                             }
                         } else if (direction % 4 == 3) {
-                            if (map[posX][posY] != 'G') {
-                                map[posX][posY] = 'G';
+                            if (!map[posX][posY].contains("G")) {
+                                map[posX][posY] += 'G';
                                 if (posY > 0) {
-                                    if (map[posX][posY - 1] == '#') {
+                                    if (map[posX][posY - 1].equals("#")) {
                                         direction++;
                                     } else {
                                         posY--;
@@ -137,7 +137,7 @@ public class Main{
         System.out.println(total);*/
         System.out.println(totalPart2);
     }
-    public static void print2D(char mat[][])
+    public static void print2D(String mat[][])
     {
         System.out.println("\033[H\033[2J");
         System.out.flush();
@@ -146,7 +146,7 @@ public class Main{
 
             // Loop through all elements of current row
             for (int j = 0; j < mat[i].length; j++) {
-                if (mat[i][j] == '^'){
+                if (mat[i][j].contains("^")){
                     System.out.print("\u001B[31m" + mat[i][j] + "\u001B[0m");
                 }else{
                     System.out.print(mat[i][j]);
