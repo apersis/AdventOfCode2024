@@ -21,27 +21,29 @@ public class Main {
         System.out.println(total);
     }
     public static long calcul(List<Long> monEquation){
-        long nombreCombinaisons = Math.round(Math.pow(2,monEquation.size()-2));
+        long nombreCombinaisons = Math.round(Math.pow(3,monEquation.size()-2));
         for (int i = 0; i < nombreCombinaisons; i++) {
             // init du binaire
-            int[] binaire = new int[monEquation.size() - 2];
-            for (int j = 0; j < binaire.length; j++) {
-                binaire[j] = 0;
+            int[] trinaire = new int[monEquation.size() - 2];
+            for (int j = 0; j < trinaire.length; j++) {
+                trinaire[j] = 0;
             }
             int id = 0;
-            int decToBin = i;
-            while (decToBin > 0) {
-                binaire[id++] = decToBin % 2;
-                decToBin = decToBin / 2;
+            int decToTri = i;
+            while (decToTri > 0) {
+                trinaire[id++] = decToTri % 3;
+                decToTri = decToTri / 3;
             }
 
             long totalCombinaison = monEquation.get(1);
             for (int j = 2; j < monEquation.size(); j++) {
                 //ADDITIONNE CHAQUE NOMBRE
-                if (binaire[j - 2] == 0) {
+                if (trinaire[j - 2] == 0) {
                     totalCombinaison += monEquation.get(j);
-                } else {
+                } else if (trinaire[j - 2] == 1){
                     totalCombinaison *= monEquation.get(j);
+                } else {
+                    totalCombinaison = Long.parseLong (String.valueOf(totalCombinaison) + String.valueOf(monEquation.get(j)));
                 }
             }
             if (totalCombinaison == monEquation.getFirst()) {
