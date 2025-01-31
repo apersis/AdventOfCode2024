@@ -25,7 +25,8 @@ public class Main {
 
             index++;
         }
-        int indexFirstNull = 0;
+        // PART 1
+        /*int indexFirstNull = 0;
         int indexLastInt = diskMap.size()-1;
         while (indexFirstNull < indexLastInt){
             while (diskMap.get(indexFirstNull) != null){
@@ -36,6 +37,52 @@ public class Main {
             }
             if (indexFirstNull < indexLastInt) {
                 Collections.swap(diskMap, indexLastInt, indexFirstNull);
+            }
+        }*/
+        // PART 2
+        int indexLastFile = diskMap.size()-1;
+        int sizeLastFile = 1;
+        int indexFirstNull = 0;
+        int sizeFirstNull = 0;
+        while (indexLastFile > 0){
+            sizeLastFile = 1;
+            sizeFirstNull = 0;
+            indexFirstNull = 0;
+            // Naviguer jusqu'au dernier fichier
+            while (diskMap.get(indexLastFile) == null && indexLastFile > 1) {
+                indexLastFile--;
+            }
+            // Determiner sa taille et placer son idex au premier
+            while (diskMap.get(indexLastFile - 1) != null && diskMap.get(indexLastFile - 1).equals(diskMap.get(indexLastFile)) && indexLastFile > 1) {
+                indexLastFile--;
+                sizeLastFile++;
+            }
+            if (indexFirstNull > 94520) {
+                System.out.println("coucou");
+            }
+            while (sizeFirstNull < sizeLastFile && indexFirstNull < diskMap.size()) {
+                // Naviguer jusqu'au premier null
+                while (diskMap.get(indexFirstNull) != null && indexFirstNull < diskMap.size()) {
+                    indexFirstNull++;
+                }
+                sizeFirstNull = 1;
+                // Determiner sa taille
+                int i = 0;
+                while (indexFirstNull + i + 1 < diskMap.size() && diskMap.get(indexFirstNull + i + 1) == (diskMap.get(indexFirstNull + i))) {
+                    sizeFirstNull++;
+                    i++;
+                }
+                // Si la taille du premier null est trop petit, on passe au suivant
+                if (sizeFirstNull < sizeLastFile && indexFirstNull + i < diskMap.size()) {
+                    indexFirstNull += i + 1;
+                }
+            }
+            if (sizeFirstNull >= sizeLastFile) {
+                for (int i = 0; i < sizeLastFile; i++) {
+                    Collections.swap(diskMap, indexFirstNull + i, indexLastFile + i);
+                }
+            } else {
+                System.out.println(diskMap);
             }
         }
         index = 0;
