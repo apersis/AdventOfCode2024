@@ -44,7 +44,7 @@ public class Main {
         int sizeLastFile = 1;
         int indexFirstNull = 0;
         int sizeFirstNull = 0;
-        while (indexLastFile > 0){
+        while (indexLastFile > 1){
             sizeLastFile = 1;
             sizeFirstNull = 0;
             indexFirstNull = 0;
@@ -52,43 +52,50 @@ public class Main {
             while (diskMap.get(indexLastFile) == null && indexLastFile > 1) {
                 indexLastFile--;
             }
-            // Determiner sa taille et placer son idex au premier
-            while (diskMap.get(indexLastFile - 1) != null && diskMap.get(indexLastFile - 1).equals(diskMap.get(indexLastFile)) && indexLastFile > 1) {
-                indexLastFile--;
-                sizeLastFile++;
-            }
-            if (indexFirstNull > 94520) {
-                System.out.println("coucou");
-            }
-            while (sizeFirstNull < sizeLastFile && indexFirstNull < diskMap.size()) {
-                // Naviguer jusqu'au premier null
-                while (diskMap.get(indexFirstNull) != null && indexFirstNull < diskMap.size()) {
-                    indexFirstNull++;
+            if (indexLastFile > 1) {
+                // Determiner sa taille et placer son index au premier
+                while (diskMap.get(indexLastFile - 1) != null && diskMap.get(indexLastFile - 1).equals(diskMap.get(indexLastFile)) && indexLastFile > 1) {
+                    indexLastFile--;
+                    sizeLastFile++;
                 }
-                sizeFirstNull = 1;
-                // Determiner sa taille
-                int i = 0;
-                while (indexFirstNull + i + 1 < diskMap.size() && diskMap.get(indexFirstNull + i + 1) == (diskMap.get(indexFirstNull + i))) {
-                    sizeFirstNull++;
-                    i++;
+                if (indexFirstNull > 94520) {
+                    System.out.println("coucou");
                 }
-                // Si la taille du premier null est trop petit, on passe au suivant
-                if (sizeFirstNull < sizeLastFile && indexFirstNull + i < diskMap.size()) {
-                    indexFirstNull += i + 1;
+                while (sizeFirstNull < sizeLastFile && indexFirstNull < diskMap.size()) {
+                    // Naviguer jusqu'au premier null
+                    while (diskMap.get(indexFirstNull) != null && indexFirstNull < diskMap.size()) {
+                        indexFirstNull++;
+                    }
+                    sizeFirstNull = 1;
+                    // Determiner sa taille
+                    int i = 0;
+                    while (indexFirstNull + i + 1 < diskMap.size() && diskMap.get(indexFirstNull + i + 1) == (diskMap.get(indexFirstNull + i))) {
+                        sizeFirstNull++;
+                        i++;
+                    }
+                    // Si la taille du premier null est trop petit, on passe au suivant
+                    if (sizeFirstNull < sizeLastFile && indexFirstNull + i < diskMap.size()) {
+                        indexFirstNull += i + 1;
+                    }
+                }
+                if (sizeFirstNull >= sizeLastFile && indexFirstNull < indexLastFile) {
+                    for (int i = 0; i < sizeLastFile; i++) {
+                        Collections.swap(diskMap, indexFirstNull + i, indexLastFile + i);
+                    }
+                } else {
+                    indexLastFile--;
                 }
             }
-            if (sizeFirstNull >= sizeLastFile) {
-                for (int i = 0; i < sizeLastFile; i++) {
-                    Collections.swap(diskMap, indexFirstNull + i, indexLastFile + i);
-                }
-            } else {
-                System.out.println(diskMap);
-            }
+            System.out.println("Premier null : " + indexFirstNull);
+            System.out.println("Dernier fichier : " + indexLastFile);
+
         }
         index = 0;
         long total = 0;
-        while (diskMap.get(index) != null){
-            total += diskMap.get(index) * index;
+        while (index < diskMap.size()){
+            if (diskMap.get(index) != null) {
+                total += diskMap.get(index) * index;
+            }
             index++;
         }
         System.out.println(diskMap);
