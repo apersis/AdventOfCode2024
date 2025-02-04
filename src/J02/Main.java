@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
         Scanner scanner = new Scanner(new File("src/J02/entree.txt"));
         int nbrSafe = 0;
         while (scanner.hasNextLine()) {
@@ -75,12 +76,14 @@ public class Main {
                     if (typeLigne == TypeLigne.DECROISSANT || typeLigne == TypeLigne.CROISSANT) {
                         nbrSafe++;
                         isSafe = true;
-                        System.out.print(nbrSafe + " Clean : ");
                     }
                 }
             }
             System.out.println(line);
         }
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
         System.out.println(nbrSafe);
+        System.out.println("Temps d'execution : " + executionTime + " ms");
     }
 }
