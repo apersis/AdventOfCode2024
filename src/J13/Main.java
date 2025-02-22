@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
         Scanner scanner = new Scanner(new File("src/J13/entree.txt"));
         List<Long> btnAX = new ArrayList<>();
         List<Long> btnAY = new ArrayList<>();
@@ -30,8 +31,12 @@ public class Main {
                     btnBX.add(x);
                     btnBY.add(y);
                 } else if (index % 4 == 2) {
-                    prizeX.add(x);
-                    prizeY.add(y);
+                    long myPrizeX = x;
+                    long myPrizeY = y;
+                    //myPrizeX += 10000000000000L;
+                    //myPrizeY += 10000000000000L;
+                    prizeX.add(myPrizeX);
+                    prizeY.add(myPrizeY);
                 }
             }
             index++;
@@ -65,5 +70,8 @@ public class Main {
             System.out.println(total);
         }
         System.out.println(total);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Temps d'execution : " + executionTime + " ms");
     }
 }
