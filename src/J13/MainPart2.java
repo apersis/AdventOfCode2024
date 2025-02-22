@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class MainPart2 {
     public static void main(String[] args) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
         Scanner scanner = new Scanner(new File("src/J13/entree.txt"));
         List<Long> btnAX = new ArrayList<>();
         List<Long> btnAY = new ArrayList<>();
@@ -30,42 +31,69 @@ public class MainPart2 {
                     btnBX.add(x);
                     btnBY.add(y);
                 } else if (index % 4 == 2) {
-                    prizeX.add(x+10000000000000L);
-                    prizeY.add(y+10000000000000L);
+                    long myPrizeX = x;
+                    long myPrizeY = y;
+                    myPrizeX += 10000000000000L;
+                    myPrizeY += 10000000000000L;
+                    prizeX.add(myPrizeX);
+                    prizeY.add(myPrizeY);
                 }
             }
             index++;
         }
-        int total = 0;
+        long total = 0;
         for (int i = 0; i < btnAX.size(); i++) {
-            long countBtnA = 1;
-            long countBtnB = 0;
-            List<Long> lstPrix = new ArrayList<>();
-            boolean firstPhase = true;
-            while (countBtnA > 0){
-                if (btnAX.get(i)*countBtnA+btnBX.get(i)*countBtnB == prizeX.get(i) && btnAY.get(i)*countBtnA+btnBY.get(i)*countBtnB == prizeY.get(i)){
-                    lstPrix.add(countBtnA*3+countBtnB);
-                    firstPhase = false;
-                    countBtnA/=2;
-                    countBtnA =+ countBtnA/2;
-                }else{
-                    if (btnAX.get(i)*countBtnA+btnBX.get(i)*countBtnB <= prizeX.get(i)){
-                        if(firstPhase) {
-                            countBtnA*=2;
-                        }else{
-                            countBtnB*=2;
-                        }
-                    }else{
-                        firstPhase = false;
-                        countBtnA/=2;
-                        countBtnA =+ countBtnA/2;
+            if (btnAX.get(i) * btnAY.get(i) > btnBX.get(i) * btnBY.get(i) * 3){
+                long nbrA = prizeX.get(i) / btnAX.get(i);
+                long reste = prizeX.get(i) % btnAX.get(i);
+                while (reste % btnBX.get(i) != 0 && nbrA >=0){
+                        nbrA--;
+                        reste += btnAX.get(i);
+                }
+                long nbrB = reste / btnBX.get(i);
+                while ((nbrA * btnAX.get(i) + nbrB * btnBX.get(i) != prizeX.get(i)
+                        || nbrA * btnAY.get(i) + nbrB * btnBY.get(i) != prizeY.get(i))
+                        && nbrA >= 0){
+                    nbrA--;
+                    reste += btnAX.get(i);
+                    while (reste % btnBX.get(i) != 0){
+                        nbrA--;
+                        reste += btnAX.get(i);
                     }
+                    nbrB = reste / btnBX.get(i);
+                }
+                if (nbrA >= 0) {
+                    total += nbrA * 3 + nbrB;
+                }
+            }else{
+                long nbrB = prizeX.get(i) / btnBX.get(i);
+                long reste = prizeX.get(i) % btnBX.get(i);
+                while (reste % btnAX.get(i) != 0 && nbrB >=0){
+                    nbrB--;
+                    reste += btnBX.get(i);
+                }
+                long nbrA = reste / btnAX.get(i);
+                while ((nbrA * btnAX.get(i) + nbrB * btnBX.get(i) != prizeX.get(i)
+                        || nbrA * btnAY.get(i) + nbrB * btnBY.get(i) != prizeY.get(i))
+                        && nbrB >= 0){
+                    nbrB--;
+                    reste += btnBX.get(i);
+                    while (reste % btnAX.get(i) != 0){
+                        nbrB--;
+                        reste += btnBX.get(i);
+                    }
+                    nbrA = reste / btnAX.get(i);
+                }
+                if (nbrB >= 0) {
+                    total += nbrA * 3 + nbrB;
                 }
             }
-            total += lstPrix.stream().min(Long::compareTo).orElse(0L);
             System.out.println(i);
             System.out.println(total);
         }
         System.out.println(total);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Temps d'execution : " + executionTime + " ms");
     }
 }
